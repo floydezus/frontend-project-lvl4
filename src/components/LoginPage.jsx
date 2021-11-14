@@ -2,11 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
+import { useLocation, useHistory, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import enter from '../enter.jpeg';
 
 const LoginPage = () => {
-
+  const auth = useAuth();
+  const [isAuthFailed, setIsAuthFailed] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const inputUsername = useRef();
   useEffect(() => {
     inputUsername.current.focus();
@@ -17,18 +24,39 @@ const LoginPage = () => {
       username: '',
       password: '',
     },
-    onSubmit: async values => {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      setIsAuthFailed(false);
+      console.log('onSubmit');
+      try {
+        const res = await axios.post(routes.LoginPath(), values);
+        localStorage.setItem('userId', JSON.stringify(res.data));
+        auth.logIn();
+        const from = location.state?.from?.pathname || "/";
+        navigate(from, { replace: true });
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 401) {
+          setIsAuthFailed(true);
+          inputUsername.current.select();
+          return;
+        }
+        throw err;
+      }
     },
-    validationSchema: Yup.object().shape({
-      username: Yup.string()
-        .required("Пожалуйста, заполните это поле."),
-      password: Yup.string()
-        .required("Пожалуйста, заполните это поле.")
-        .min(6)
-    }),
+    // validationSchema: Yup.object().shape({
+    //   username: Yup.string()
+    //     .required("Пожалуйста, заполните это поле."),
+    //   password: Yup.string()
+    //     .required("Пожалуйста, заполните это поле.")
+    // }),
+    // onSubmit: values => {
+
+    //   console.log('!!!!!!!!!!');
+    //   alert(JSON.stringify(values, null, 2));
+
+    // }
   });
+
+  //console.log(formik);
 
   return (
     <Container fluid>
@@ -48,9 +76,9 @@ const LoginPage = () => {
                     placeholder="username"
                     name="username"
                     id="username"
-                    // autoComplete="username"
-                    // isInvalid={isAuthFailed}
-                    // required
+                    autoComplete="username"
+                    isInvalid={isAuthFailed}
+                    required
                     ref={inputUsername}
                   />
                   </Form.Group>
@@ -63,15 +91,15 @@ const LoginPage = () => {
                       placeholder="password"
                       name="password"
                       id="password"
-                      // autoComplete="current-password"
-                      // isInvalid={isAuthFailed}
+                      autoComplete="current-password"
+                      isInvalid={isAuthFailed}
                       required
                     />
                     <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="p-3">
                   <Button className="w-100" type="submit" variant="outline-primary" size="lg" disabled={formik.isSubmitting}>Enter</Button>
-                 </Form.Group>
+                </Form.Group>
                 </Form>
             </Card.Body>
           </Card>
