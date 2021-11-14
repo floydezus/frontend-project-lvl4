@@ -7,7 +7,8 @@ import { useLocation, useHistory, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-// import enter from '../enter.jpeg';
+import enter from '../enter.jpeg';
+import { entries } from 'lodash';
 
 const LoginPage = () => {
   const auth = useAuth();
@@ -29,7 +30,7 @@ const LoginPage = () => {
       console.log('onSubmit');
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
+        localStorage.setItem('user', JSON.stringify(res.data));
         auth.logIn();
         const from = location.state?.from?.pathname || "/";
         navigate(from, { replace: true });
@@ -50,13 +51,8 @@ const LoginPage = () => {
     // }),
     // onSubmit: values => {
 
-    //   console.log('!!!!!!!!!!');
-    //   alert(JSON.stringify(values, null, 2));
 
-    // }
   });
-
-  //console.log(formik);
 
   return (
     <Container fluid>
@@ -66,7 +62,8 @@ const LoginPage = () => {
             {/* <Card.Header>Вход</Card.Header> */}
             <Card.Title className="text-center m-3"><h1>Enter</h1></Card.Title>
             <Card.Body>
-                {/* <Card.Img variant="left" src="holder.js/100px180" alt="Enter"/> */}
+                {/* <Card.Img variant="left" src={enter} alt="Enter"/> */}
+                <img src={enter} alt="Enter"/>
                 <Form onSubmit={formik.handleSubmit}>
                   <Form.Group className="p-3">
                   <Form.Label htmlFor="username">Username</Form.Label>
