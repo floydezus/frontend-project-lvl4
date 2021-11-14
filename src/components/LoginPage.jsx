@@ -28,7 +28,7 @@ const LoginPage = () => {
       setIsAuthFailed(false);
       console.log('onSubmit');
       try {
-        const res = await axios.post(routes.LoginPath(), values);
+        const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
         const from = location.state?.from?.pathname || "/";
