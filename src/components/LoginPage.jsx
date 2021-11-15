@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import axios from 'axios';
-import { useLocation, useHistory, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import enter from '../enter.jpeg';
-import { entries } from 'lodash';
+import enter from '../../assets/enter.jpeg';
 
 const LoginPage = () => {
   const auth = useAuth();
@@ -43,15 +42,6 @@ const LoginPage = () => {
         throw err;
       }
     },
-    // validationSchema: Yup.object().shape({
-    //   username: Yup.string()
-    //     .required("Пожалуйста, заполните это поле."),
-    //   password: Yup.string()
-    //     .required("Пожалуйста, заполните это поле.")
-    // }),
-    // onSubmit: values => {
-
-
   });
 
   return (
@@ -62,8 +52,7 @@ const LoginPage = () => {
             {/* <Card.Header>Вход</Card.Header> */}
             <Card.Title className="text-center m-3"><h1>Enter</h1></Card.Title>
             <Card.Body>
-                {/* <Card.Img variant="left" src={enter} alt="Enter"/> */}
-                <img src={enter} alt="Enter"/>
+                <Card.Img variant="left" src={enter} alt="Enter"/>
                 <Form onSubmit={formik.handleSubmit}>
                   <Form.Group className="p-3">
                   <Form.Label htmlFor="username">Username</Form.Label>

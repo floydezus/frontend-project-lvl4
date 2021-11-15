@@ -6,7 +6,7 @@ import { BrowserRouter as Router,
   Navigate,
   useLocation
 } from "react-router-dom";
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 
 import NotFoundPage from './NotFoundPage.jsx';
 import LoginPage from './LoginPage.jsx';
@@ -40,11 +40,22 @@ const RequireAuth = ({ children }) => {
   return children;
 };
 
+const AuthButton = () => {
+  const auth = useAuth();
+
+  return (
+    auth.loggedIn
+      ? <Button onClick={auth.logOut}>Log out</Button>
+      : <Button  className="d-none">Log in</Button>
+  );
+};
+
 const App = () => (
   <AuthProvider>
     <Router>
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar.Brand as={Link} to="/" className="p-3">Chat</Navbar.Brand>
+        <AuthButton />
       </Navbar>
       <div className="container p-3">
       <Routes>
