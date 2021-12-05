@@ -10,12 +10,14 @@ import { Navbar, Nav, Button } from 'react-bootstrap';
 
 import NotFoundPage from './NotFoundPage.jsx';
 import LoginPage from './LoginPage.jsx';
+import Chat from './ChatPage';
 import authContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isLogged = !!user?.token;
+  const [loggedIn, setLoggedIn] = useState(isLogged);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('user');
@@ -53,28 +55,22 @@ const AuthButton = () => {
 const App = () => (
   <AuthProvider>
     <Router>
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Navbar.Brand as={Link} to="/" className="p-3">Chat</Navbar.Brand>
+      <Navbar className="justify-content-between p-3" bg="dark" variant="dark" expand="lg">
+        <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
         <AuthButton />
       </Navbar>
-      <div className="container p-3">
       <Routes>
         <Route path="/" element={
             <RequireAuth>
-              <Home />
+              <Chat />
             </RequireAuth>
           }
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      </div>
     </Router>
   </AuthProvider>
 );
-
-const Home = () => {
-    return <h1 className="text-center mt-5 mb-4">Welcome to the club, buddy!</h1>;
-};
 
 export default App;

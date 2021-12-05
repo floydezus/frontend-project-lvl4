@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import enter from '../../assets/enter.jpeg';
 
 const LoginPage = () => {
@@ -46,14 +45,14 @@ const LoginPage = () => {
 
   return (
     <Container fluid>
-      <Row className="justify-content-center pt-5">
-        <Col className="col-sm-4">
-          <Card>
+      <Row className="justify-content-center align-content-center pt-5 h-100">
+        <Col className="col-12 col-md-8 col-xxl-6">
+          <Card className="shadow">
             {/* <Card.Header>Вход</Card.Header> */}
             <Card.Title className="text-center m-3"><h1>Enter</h1></Card.Title>
-            <Card.Body>
-                <Card.Img variant="left" src={enter} alt="Enter"/>
-                <Form onSubmit={formik.handleSubmit}>
+            <Card.Body className="row p-5">
+                <Card.Img variant="left" className="h-50 w-50" src={enter} alt="Enter"/>
+                <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                   <Form.Group className="p-3">
                   <Form.Label htmlFor="username">Username</Form.Label>
                   <Form.Control
